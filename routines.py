@@ -137,7 +137,24 @@ def fifth_point_cramer(atom_5,list_4_points,dict_distance,dict_coord):
 		return x5,y5,z5
 	else:
 		raise 'ZeroDivisionError'
+
+def jacobien(x_,y_,z_,list_4_points,dict_coord,distance_matrix):
+	Jac=[]
+	atom_1=list_4_points[0]
+	x1,y1,z1=dict_coord[atom_1].x,dict_coord[atom_1].y,dict_coord[atom_1].z
+	Jac.append(np.array([2.*(x_-x1),2.*(y_-y1),2.*(z_-z1)]))
 	
+	atom_2=list_4_points[1]
+	x2,y2,z2=dict_coord[atom_2].x,dict_coord[atom_2].y,dict_coord[atom_2].z
+	Jac.append(np.array([2.*(x_-x2),2.*(y_-y2),2.*(z_-z2)]))
+
+	atom_3=list_4_points[2]
+	x3,y3,z3=dict_coord[atom_3].x,dict_coord[atom_3].y,dict_coord[atom_3].z
+	Jac.append(np.array([2.*(x_-x3),2.*(y_-y3),2.*(z_-z3)]))
+	
+	Jac=np.array(Jac)
+	return Jac
+
 def iterative_procedure(vertices, distance_matrix):
 	list_c=list(vertices)
 	list_vertices=list(vertices)
