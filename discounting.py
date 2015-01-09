@@ -59,6 +59,7 @@ def small_construction(node, list_points,net_matrix):
 					if item!=node_:
 						list_new.append(item)
 				try:
+					dict_coord=dict()
 					dict_coord=constructing_4_points(list_new,net_matrix)
 					x_,y_,z_=fifth_point_cramer(node,list_new,net_matrix,dict_coord)
 					#dict_coord[node]=Point(node,x_,y_,z_)
@@ -74,23 +75,28 @@ def small_construction(node, list_points,net_matrix):
 				except ZeroDivisionError: pass
 				except ValueError: pass		
 	elif nb_check==5:
-		node_miss_1, node_missing_2=missing[0][0], missing[0][1]
-		net_matrix[node_miss_1][node_miss_2]=10.0 # default value
-		net_matrix[node_miss_2][node_miss_1]=10.0
-		list_4_points=[]
-		list_4_points.append(node_miss_1)
-		list_4_points.append(node)
-		for node_ in list_points:
-			if node_ not in [node_miss_1, node_miss_2]:
-				list_4_points.append(node_)
-		try:
-			dict_coord=constructing_4_points(list_4_points,net_matrix)
-			x_,y_,z_=fifth_point_cramer(node,list_4_points,net_matrix,dict_coord)
-			for i in xrange(10):
-				appro=raphson(x_,y_,z_,node_miss_2,list_4 points,dict_coord,net_matrix,eps)
-				x_,y_,z_,eps=x_-appro[0],y_-appro[1],z_-appro[2],eps-appro[3]
-		except ZeroDivisionError:pass
-		except ValueError:pass
+		for edge_missing in missing:
+			net_matrix[edge_missing[0]][edge_missing[1]]=10.
+		for i in xrange(2):
+			eps=0.1
+			list_4_points=[]
+			node_miss_1,node_miss_2=missing[0][i],missing[0][1-i]
+			list_4_points.append(node_miss_1)
+			list_4_points.append(node)
+			for node_ in list_points:
+				if node_ not in [node_miss_1,node_miss_2]:
+					list_4_points.append(node_)
+			try:
+				dict_coord=dict()
+				dict_coord=constructing_4_points(list_4_points,net_matrix)
+				x_,y_,z_=fifth_point_cramer(node_miss_2,list_4_points,net_matrix,dict_coord)
+				for i in xrange(10):
+					appro=raphson(x_,y_,z_,node_miss_2,list_4_points,dict_coord,net_matrix,eps)
+					x_,y_,z_,eps=x_-appro[0],y_-appro[1],z_-appro[2],eps-appro[3]
+				print node_miss_1,node_miss_2,'%.2f'%(net_matrix[node_miss_1][node_miss_2]+eps)
+			except ZeroDivisionError: print missing[0][1-i],list_4_points
+			except ValueError: print missing[0][1-i],list_4_points
+			#pass
 	else:
 		pass
 #--------------------------
@@ -206,8 +212,10 @@ for node in net_core:
 			#	small_construction(node_ext,list_,net_matrix)
 			#print '==================================='
 			pass
-		elif nb_check==4:
+		elif nb_check==5:
 			nb_+=1
+			small_construction(node,list_neighbors_,net_matrix)
+			print '__'*10
 			#print node, list_neighbors_, missing[0]
 
 print nb_
