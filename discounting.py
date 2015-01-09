@@ -73,9 +73,26 @@ def small_construction(node, list_points,net_matrix):
 					else: pass
 				except ZeroDivisionError: pass
 				except ValueError: pass		
+	elif nb_check==5:
+		node_miss_1, node_missing_2=missing[0][0], missing[0][1]
+		net_matrix[node_miss_1][node_miss_2]=10.0 # default value
+		net_matrix[node_miss_2][node_miss_1]=10.0
+		list_4_points=[]
+		list_4_points.append(node_miss_1)
+		list_4_points.append(node)
+		for node_ in list_points:
+			if node_ not in [node_miss_1, node_miss_2]:
+				list_4_points.append(node_)
+		try:
+			dict_coord=constructing_4_points(list_4_points,net_matrix)
+			x_,y_,z_=fifth_point_cramer(node,list_4_points,net_matrix,dict_coord)
+			for i in xrange(10):
+				appro=raphson(x_,y_,z_,node_miss_2,list_4 points,dict_coord,net_matrix,eps)
+				x_,y_,z_,eps=x_-appro[0],y_-appro[1],z_-appro[2],eps-appro[3]
+		except ZeroDivisionError:pass
+		except ValueError:pass
 	else:
 		pass
-
 #--------------------------
 
 path_local = os.getcwd()
