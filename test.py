@@ -32,3 +32,5 @@ def assignment_enhancement(set_atom, res, dict_assignment):
 								dict_assignment[atom_2][atom_ref_2]+=0.05
 				except KeyError:
 					pass
+
+# auction algorithm
