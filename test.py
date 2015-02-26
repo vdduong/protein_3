@@ -13,7 +13,8 @@ def assignment(set_atom, res, dict_assignment):
 	for atom in set_atom:
 		for atom_ref in dict_res_ref[res]: # if "H" in atom_ref ?
 			if abs(shift_exp[atom] - dict_res_ref[res][atom_ref].cs) <= tol_H:
-				dict_assignment[atom][atom_ref] = proba_matching(shift_exp[atom], dict_res_ref[res][atom_ref].cs, tol_H)
+				dict_assignment[atom][atom_ref] = proba_matching(shift_exp[atom], \
+								dict_res_ref[res][atom_ref].cs, tol_H)
 	return dict_assignment
 
 def assignment_enhancement(set_atom, res, dict_assignment):
